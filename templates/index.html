@@ -4,27 +4,118 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Conversor de Divisas</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        body {
-            background: linear-gradient(135deg, #1e3c72, #2a5298);
+        :root {
+            --color-bg-start: #0b2e2e;
+            --color-bg-end: #0f766e;
+            --color-surface: rgba(255, 255, 255, 0.96);
+            --color-text: #12302f;
+            --color-text-muted: #5b7776;
+            --color-border: #cfe0de;
+            --color-primary: #0f766e;
+            --color-primary-hover: #0b5f58;
+            --color-accent: #f59e0b;
+            --color-result-bg: #ecfdf5;
+            --color-result-text: #047857;
+
+
+            --font-sans: "Manrope", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+            --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Consolas, monospace;
+
+
+            --bs-body-font-family: var(--font-sans);
+            --bs-body-color: var(--color-text);
+            --bs-primary: var(--color-primary);
+            --bs-primary-rgb: 15, 118, 110;
         }
+
+        body {
+            font-family: var(--font-sans);
+            color: var(--color-text);
+            background: linear-gradient(135deg, var(--color-bg-start), var(--color-bg-end));
+            background-attachment: fixed;
+            padding: 1rem;
+            -webkit-font-smoothing: antialiased;
+        }
+
+
         .converter-card {
+            width: 100%;
+            max-width: 420px;
+            border: 0;
             border-radius: 20px;
             backdrop-filter: blur(10px);
-            background: rgba(255, 255, 255, 0.95);
+            background: var(--color-surface);
         }
+        .converter-card h2 {
+            font-size: clamp(1.35rem, 5vw, 1.75rem);
+            font-weight: 800;
+            letter-spacing: -0.02em;
+        }
+
+
+        .form-label {
+            font-weight: 600;
+            font-size: 0.875rem;
+            color: var(--color-text-muted);
+        }
+        .form-control,
+        .form-select {
+            font-family: var(--font-sans);
+            border-color: var(--color-border);
+            border-radius: 10px;
+            color: var(--color-text);
+        }
+        .form-control:focus,
+        .form-select:focus {
+            border-color: var(--color-primary);
+            box-shadow: 0 0 0 0.25rem rgba(15, 118, 110, 0.2);
+        }
+
+
+        .btn-primary {
+            --bs-btn-bg: var(--color-primary);
+            --bs-btn-border-color: var(--color-primary);
+            --bs-btn-hover-bg: var(--color-primary-hover);
+            --bs-btn-hover-border-color: var(--color-primary-hover);
+            --bs-btn-active-bg: var(--color-primary-hover);
+            --bs-btn-active-border-color: var(--color-primary-hover);
+            --bs-btn-focus-shadow-rgb: 15, 118, 110;
+            border-radius: 10px;
+            font-weight: 700;
+            letter-spacing: 0.01em;
+        }
+
+
         .result-box {
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: #198754;
+            font-family: var(--font-mono);
+            font-size: clamp(1.25rem, 6vw, 1.6rem);
+            font-weight: 700;
+            color: var(--color-result-text);
+            background: var(--color-result-bg);
+            border-radius: 12px;
+            padding: 0.75rem 1rem;
+            overflow-wrap: anywhere;
+        }
+
+
+        @media (max-width: 575.98px) {
+            body { padding: 0.75rem; }
+            .converter-card { padding: 1.5rem 1.25rem !important; border-radius: 16px; }
+
+            .converter-card .row > .col { flex: 0 0 100%; max-width: 100%; margin-bottom: 0.5rem; }
+            .converter-card .row > .col.text-center { transform: rotate(90deg); margin-bottom: 0; }
         }
     </style>
 </head>
 
-<body class="d-flex justify-content-center align-items-center vh-100">
+<body class="d-flex justify-content-center align-items-center min-vh-100">
 
-    <div class="card shadow-lg p-4 converter-card" style="width: 400px;">
+    <div class="card shadow-lg p-4 converter-card">
         <h2 class="text-center mb-4">💱 Conversor de Divisas</h2>
 
         <form method="post">
