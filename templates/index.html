@@ -38,8 +38,66 @@
             color: var(--color-text);
             background: linear-gradient(135deg, var(--color-bg-start), var(--color-bg-end));
             background-attachment: fixed;
-            padding: 1rem;
             -webkit-font-smoothing: antialiased;
+        }
+
+
+        /* Barra de navegación (rama feature-redesign-navbar) */
+        .site-navbar {
+            padding: 1rem 0;
+            background: #f8faff;
+            border-bottom: 1px solid #dce5f3;
+            box-shadow: 0 4px 18px rgba(15, 35, 70, 0.15);
+            font-family: "Trebuchet MS", "Segoe UI", sans-serif;
+        }
+        .site-navbar .navbar-content {
+            gap: 1rem;
+        }
+        .site-navbar .navbar-brand {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin: 0;
+            color: #1e3c72;
+            font-size: 1.15rem;
+            font-weight: 700;
+            letter-spacing: 0.02em;
+            white-space: normal;
+        }
+        .site-navbar .navbar-logo {
+            flex-shrink: 0;
+            padding: 0.35rem;
+            border-radius: 12px;
+            background: #e8eef8;
+            object-fit: contain;
+        }
+        .site-navbar .navbar-link {
+            padding: 0.65rem 1.25rem;
+            border-radius: 999px;
+            background: #1e3c72;
+            color: #fff;
+            font-size: 0.95rem;
+            font-weight: 700;
+            text-decoration: none;
+        }
+        .site-navbar .navbar-link:hover {
+            background: #2a5298;
+        }
+        .site-navbar a:focus-visible {
+            outline: 3px solid #2a5298;
+            outline-offset: 4px;
+        }
+        @media (max-width: 575.98px) {
+            .site-navbar .navbar-content {
+                flex-direction: column;
+            }
+            .site-navbar .navbar-brand {
+                font-size: 1rem;
+            }
+            .site-navbar .navbar-link {
+                width: 100%;
+                text-align: center;
+            }
         }
 
 
@@ -104,7 +162,6 @@
 
 
         @media (max-width: 575.98px) {
-            body { padding: 0.75rem; }
             .converter-card { padding: 1.5rem 1.25rem !important; border-radius: 16px; }
 
             .converter-card .row > .col { flex: 0 0 100%; max-width: 100%; margin-bottom: 0.5rem; }
@@ -113,52 +170,69 @@
     </style>
 </head>
 
-<body class="d-flex justify-content-center align-items-center min-vh-100">
+<body class="d-flex flex-column min-vh-100">
 
-    <div class="card shadow-lg p-4 converter-card">
-        <h2 class="text-center mb-4">💱 Conversor de Divisas</h2>
+    <nav class="navbar site-navbar w-100" aria-label="Navegación principal">
+        <div class="container navbar-content">
+            <a class="navbar-brand" href="{{ url_for('home') }}">
+                <img class="navbar-logo" src="{{ url_for('static', filename='logo.png') }}"
+                     alt="" width="44" height="44">
+                <span>Conversor de Divisas</span>
+            </a>
+            <a class="navbar-link" href="#conversor" aria-current="location">Conversor</a>
+        </div>
+    </nav>
 
-        <form method="post">
-            <div class="mb-3">
-                <label class="form-label">Cantidad</label>
-                <input type="number" step="0.01" name="amount" 
-                       class="form-control form-control-lg" 
-                       placeholder="Introduce cantidad" required>
-            </div>
+    <main class="d-flex flex-grow-1 justify-content-center align-items-center w-100 px-3 py-4">
+        <div id="conversor" class="card shadow-lg p-4 converter-card">
+            <h2 class="text-center mb-4">
+                <img src="{{ url_for('static', filename='logo.png') }}"
+                     class="object-fit-contain" alt="" width="32" height="32">
+                Conversor de Divisas
+            </h2>
 
-            <div class="row mb-3">
-                <div class="col">
-                    <select name="from_currency" class="form-select">
-                        <option value="EUR">EUR €</option>
-                        <option value="USD">USD $</option>
-                        <option value="GBP">GBP £</option>
-                    </select>
+            <form method="post">
+                <div class="mb-3">
+                    <label class="form-label">Cantidad</label>
+                    <input type="number" step="0.01" name="amount"
+                           class="form-control form-control-lg"
+                           placeholder="Introduce cantidad" required>
                 </div>
-                <div class="col text-center align-self-center">
-                    →
-                </div>
-                <div class="col">
-                    <select name="to_currency" class="form-select">
-                        <option value="USD">USD $</option>
-                        <option value="EUR">EUR €</option>
-                        <option value="GBP">GBP £</option>
-                    </select>
-                </div>
-            </div>
 
-            <div class="d-grid">
-                <button type="submit" class="btn btn-primary btn-lg">
-                    Convertir
-                </button>
-            </div>
-        </form>
+                <div class="row mb-3">
+                    <div class="col">
+                        <select name="from_currency" class="form-select">
+                            <option value="EUR">EUR €</option>
+                            <option value="USD">USD $</option>
+                            <option value="GBP">GBP £</option>
+                        </select>
+                    </div>
+                    <div class="col text-center align-self-center">
+                        →
+                    </div>
+                    <div class="col">
+                        <select name="to_currency" class="form-select">
+                            <option value="USD">USD $</option>
+                            <option value="EUR">EUR €</option>
+                            <option value="GBP">GBP £</option>
+                        </select>
+                    </div>
+                </div>
 
-        {% if result is not none %}
-            <div class="mt-4 text-center result-box">
-                {{ result }}
-            </div>
-        {% endif %}
-    </div>
+                <div class="d-grid">
+                    <button type="submit" class="btn btn-primary btn-lg">
+                        Convertir
+                    </button>
+                </div>
+            </form>
+
+            {% if result is not none %}
+                <div class="mt-4 text-center result-box">
+                    {{ result }}
+                </div>
+            {% endif %}
+        </div>
+    </main>
 
 </body>
 </html>
